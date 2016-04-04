@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">CurrencyConverter</string>
+    <string name="no_network">No Network Connectivity</string>
+    <string name="server_error">Server error 500</string>
+    <string name="str_from">From:</string>
+    <string name="str_to">To:</string>
+    <string name="str_amount">Amount:</string>
+    <string name="str_convert">Convert</string>
+</resources>
