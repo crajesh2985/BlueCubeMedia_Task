@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -42,8 +43,10 @@ public class HTTPAsyncTask extends AsyncTask<String, Void, ConvertDetail> {
             if (httpConnectivity.isOnline()) {
                 Log.d("TAG", "url" + url[0]);
                 response = httpConnectivity.callHttpConnectivity(url[0], serviceMethod);
-                Log.d("TAG", "response :::: " + response);
-                convertDetail = gson.fromJson(response, ConvertDetail.class);
+                if (response != null) {
+                    Log.d("TAG", "response :::: " + response);
+                    convertDetail = gson.fromJson(response, ConvertDetail.class);
+                }
             }
         }
         return convertDetail;
@@ -52,9 +55,14 @@ public class HTTPAsyncTask extends AsyncTask<String, Void, ConvertDetail> {
     @Override
     protected void onPostExecute(ConvertDetail convertDetail) {
         super.onPostExecute(convertDetail);
-        //mWeatherUtilityInterface.getWeatherDetails(weatherDetails);
-        double rate = Double.parseDouble(amount) * Double.parseDouble(convertDetail.getRate());
+        double rate = 0;
+       if( convertDetail!=null){        //mWeatherUtilityInterface.getWeatherDetails(weatherDetails);
+        rate = Double.parseDouble(amount) * Double.parseDouble(convertDetail.getRate());
         webServiceInterface.getConvertedAmount(rate);
+       }else{
+           Toast.makeText(context,"Server Error", Toast.LENGTH_LONG).show();
+           webServiceInterface.getConvertedAmount(rate);
+       }
     }
 
 }

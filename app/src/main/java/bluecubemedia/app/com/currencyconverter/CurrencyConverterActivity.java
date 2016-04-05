@@ -124,11 +124,14 @@ public class CurrencyConverterActivity extends BaseActivity implements WebServic
 
     @Override
     public void getConvertedAmount(Double rate) {
+
         progressBar.setVisibility(View.GONE);
-        db.open();
-        db.addInHistoryRequest(from,to,amount,rate.toString());
-        db.close();
-        tv_rate.setText(""+rate);
+        if(rate !=0) {
+            db.open();
+            db.addInHistoryRequest(from, to, amount, rate.toString());
+            db.close();
+            tv_rate.setText("" + rate);
+        }
     }
 
     private void callWebservice(String fromCurrency, String toCurrency, String amount){
