@@ -37,7 +37,7 @@
 
             <TextView
                 style="@style/titleView"
-                android:text="@string/str_from" />
+                android:text="@string/str_to" />
 
             <TextView
                 android:id="@+id/tv_histo_value"
