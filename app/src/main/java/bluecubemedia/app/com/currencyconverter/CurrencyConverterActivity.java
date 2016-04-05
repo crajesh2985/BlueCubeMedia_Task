@@ -20,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.List;
 import java.util.Locale;
+
+import bluecubemedia.app.com.bluecubemedia_sdk.database.DBAdapter;
 import bluecubemedia.app.com.bluecubemedia_sdk.webservice.HTTPAsyncTask;
 import bluecubemedia.app.com.bluecubemedia_sdk.webservice.HTTPConnectivity;
 import bluecubemedia.app.com.bluecubemedia_sdk.wsinterface.WebServiceInterface;
@@ -39,11 +41,17 @@ public class CurrencyConverterActivity extends BaseActivity implements WebServic
     private String mServerURL;
     private ProgressBar progressBar;
     private HTTPConnectivity httpConnectivity;
+    private String from;
+    private String to;
+    private String amount;
+    private DBAdapter db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        db = new DBAdapter(this);
 
         httpConnectivity = HTTPConnectivity.getInstance();
         tv_address = (TextView) findViewById(R.id.tv_address);
@@ -57,9 +65,9 @@ public class CurrencyConverterActivity extends BaseActivity implements WebServic
             @Override
             public void onClick(View view) {
                 progressBar.setVisibility(View.VISIBLE);
-                String from = currencyCode(sp_from.getSelectedItem().toString());
-                String to = currencyCode(sp_to.getSelectedItem().toString());
-                String amount = et_amount.getText().toString();
+                from = currencyCode(sp_from.getSelectedItem().toString());
+                to = currencyCode(sp_to.getSelectedItem().toString());
+                amount = et_amount.getText().toString();
 
                 if(httpConnectivity.isNetworkAvailable(AppSetting.context)){
                     if(httpConnectivity.isOnline()) {
@@ -70,7 +78,6 @@ public class CurrencyConverterActivity extends BaseActivity implements WebServic
                 }else {
                     showErrorMsg();
                 }
-
             }
         });
 
@@ -118,6 +125,9 @@ public class CurrencyConverterActivity extends BaseActivity implements WebServic
     @Override
     public void getConvertedAmount(Double rate) {
         progressBar.setVisibility(View.GONE);
+        db.open();
+        db.addInHistoryRequest(from,to,amount,rate.toString());
+        db.close();
         tv_rate.setText(""+rate);
     }
 

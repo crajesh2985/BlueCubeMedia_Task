@@ -7,11 +7,12 @@ import android.view.View;
 
 import com.google.gson.Gson;
 
+import bluecubemedia.app.com.bluecubemedia_sdk.database.DBAdapter;
 import bluecubemedia.app.com.bluecubemedia_sdk.model.ConvertDetail;
 import bluecubemedia.app.com.bluecubemedia_sdk.wsinterface.WebServiceInterface;
 
 
-public class HTTPAsyncTask extends AsyncTask<String,Void,ConvertDetail> {
+public class HTTPAsyncTask extends AsyncTask<String, Void, ConvertDetail> {
 
     private String url;
     private String serviceMethod;
@@ -25,7 +26,7 @@ public class HTTPAsyncTask extends AsyncTask<String,Void,ConvertDetail> {
                          WebServiceInterface webServiceInterface, String amount) {
         this.url = url;
         this.serviceMethod = serviceMethod;
-        this.context =  context;
+        this.context = context;
         httpConnectivity = HTTPConnectivity.getInstance();
         this.webServiceInterface = webServiceInterface;
         gson = new Gson();
@@ -33,17 +34,17 @@ public class HTTPAsyncTask extends AsyncTask<String,Void,ConvertDetail> {
     }
 
 
-
     @Override
     protected ConvertDetail doInBackground(String[] url) {
         String response = null;
         ConvertDetail convertDetail = null;
-        if(httpConnectivity.isNetworkAvailable(context)){
-            if(httpConnectivity.isOnline()) {
+        if (httpConnectivity.isNetworkAvailable(context)) {
+            if (httpConnectivity.isOnline()) {
+                Log.d("TAG", "url" + url[0]);
                 response = httpConnectivity.callHttpConnectivity(url[0], serviceMethod);
-                Log.d("TAG","response :::: " +response);
+                Log.d("TAG", "response :::: " + response);
                 convertDetail = gson.fromJson(response, ConvertDetail.class);
-           }
+            }
         }
         return convertDetail;
     }
@@ -52,10 +53,8 @@ public class HTTPAsyncTask extends AsyncTask<String,Void,ConvertDetail> {
     protected void onPostExecute(ConvertDetail convertDetail) {
         super.onPostExecute(convertDetail);
         //mWeatherUtilityInterface.getWeatherDetails(weatherDetails);
-
-        double rate = Double.parseDouble(amount)* Double.parseDouble(convertDetail.getRate());
+        double rate = Double.parseDouble(amount) * Double.parseDouble(convertDetail.getRate());
         webServiceInterface.getConvertedAmount(rate);
-
     }
 
 }

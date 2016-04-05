@@ -20,11 +20,20 @@
     </style>
 
     <style name="titleView">
-    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:textSize">18sp</item>
     <item name="android:textColor">@color/colorPrimary</item>
+
 </style>
+
+    <style name="historyValueView">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textSize">22sp</item>
+    <item name="android:textColor">@color/colorblack</item>
+    </style>
+
     <style name="spinnerView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
